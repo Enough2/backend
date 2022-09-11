@@ -18,3 +18,9 @@ def stream():
         headers={"Cache-Control": "no-cache, private", "Pragma": "no-cache"},
         media_type="multipart/x-mixed-replace; boundary=frame",
     )
+
+
+@app.get("/detect")
+def detect():
+    res = camera.detect()
+    return {"detected": res > 5, "diff_cnt": res}

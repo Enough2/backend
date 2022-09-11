@@ -1,5 +1,7 @@
 import io
-from threading import Condition, Thread
+import cv2
+import numpy as np
+from threading import Condition
 from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
 from picamera2.outputs import FileOutput
@@ -31,3 +33,18 @@ class Camera:
                 self.output.condition.wait()
                 frame = self.output.frame
             yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+
+    def detect(self):
+        imgs = [self.cam.capture_array() for i in range(3)]
+        gray = [cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) for img in imgs]
+
+        diff_a = cv2.absdiff(gray[0], gray[1])
+        diff_b = cv2.absdiff(gray[1], gray[2])
+
+        ret, diff_a = cv2.threshold(diff_a, 25, 255, cv2.THRESH_BINARY)
+        ret, diff_b = cv2.threshold(diff_b, 25, 255, cv2.THRESH_BINARY)
+
+        diff = cv2.bitwise_and(diff_a, diff_b)
+        diff_cnt = cv2.countNonZero(diff)
+
+        return diff_cnt
