@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from stream import Camera
+from model import Pipeline
 
 app = FastAPI()
 camera = Camera()
+pipeline = Pipeline()
 
 
 @app.get("/")
@@ -24,3 +26,11 @@ def stream():
 def detect():
     res = camera.detect()
     return {"detected": res}
+
+
+@app.get("/predict")
+def predict():
+    img = camera.cam.capture_image()
+    img = img.convert("RGB")
+    res = pipeline.predict_image(img)
+    return res
