@@ -23,4 +23,4 @@ def stream():
 @app.get("/detect")
 def detect():
     res = camera.detect()
-    return {"detected": res > 5, "diff_cnt": res}
+    return {"detected": res}
