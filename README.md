@@ -24,7 +24,7 @@ $ uvicorn app:app (--host 0.0.0.0)
 ```
 
 -   `/stream` - RPi 카메라 MJPEG 스트리밍
--   `/detect` - 모션 감지 여부 확인 (감지 시 5초간 지속)
+-   `/detect` - 모션 감지 여부 확인 (웹소켓)
 -   `/predict` - 이미지 분류 예측
 
 <br>
