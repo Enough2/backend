@@ -29,4 +29,4 @@ $ uvicorn app:app (--host 0.0.0.0)
 
 <br>
 
-\* _Raspberry Pi OS Bullseye ARM64 Full (2022-09-06)_ 및 _Python 3.9.2_ 환경에서 테스트되었습니다.
+\* _Raspberry Pi OS Bullseye ARM64 Full (2022-09-06)_ 의 _Python 3.9.2_ 환경에서 테스트되었습니다.

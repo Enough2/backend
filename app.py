@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.responses import StreamingResponse
 from stream import Camera
 from model import Pipeline
@@ -22,10 +22,13 @@ def stream():
     )
 
 
-@app.get("/detect")
-def detect():
-    res = camera.detect()
-    return {"detected": res}
+@app.websocket("/detect")
+async def detect(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        res = camera.detect()
+        if res:
+            await websocket.send_bytes(b'')
 
 
 @app.get("/predict")

@@ -1,7 +1,5 @@
 import io
 import cv2
-import numpy as np
-import time
 from threading import Condition
 from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
@@ -27,7 +25,6 @@ class Camera:
         )
         self.output = Output()
         self.cam.start_recording(JpegEncoder(), FileOutput(self.output))
-        self.cooldown = 0
 
     def generate(self):
         while True:
@@ -49,9 +46,4 @@ class Camera:
         diff = cv2.bitwise_and(diff_a, diff_b)
         diff_cnt = cv2.countNonZero(diff)
 
-        if diff_cnt > 5:
-            self.cooldown = time.time()
-
-        elapsed = time.time() - self.cooldown
-
-        return elapsed < 5
+        return diff_cnt > 5
