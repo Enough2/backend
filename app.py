@@ -25,10 +25,17 @@ def stream():
 @app.websocket("/detect")
 async def detect(websocket: WebSocket):
     await websocket.accept()
-    while True:
-        res = camera.detect()
-        if res:
-            await websocket.send_bytes(b'')
+    try:
+        while True:
+            res = camera.detect()
+            if res:
+                await websocket.send_text('1')
+            else:
+                await websocket.send_text('0')
+    except Exception as e:
+        print(e)
+    finally:
+        await websocket.close()
 
 
 @app.get("/predict")
